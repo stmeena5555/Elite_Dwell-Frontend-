@@ -1,0 +1,137 @@
+﻿
+   .about-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+  
+  .about-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .about-title-underline {
+    text-decoration: underline;
+    font-weight: 300;
+  }
+  
+  .about-subtitle {
+    text-align: center;
+    color: #718096; /* gray-600 */
+    max-width: 400px;
+    margin: 0 auto 2.5rem;
+    font-size: 1.125rem;
+  }
+  
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+  }
+  
+  @media (min-width: 768px) {
+    .about-content {
+      flex-direction: row;
+      align-items: center;
+      gap: 5rem;
+    }
+  }
+  
+  .about-image {
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .about-details {
+    max-width: 500px;
+    color: #718096;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  @media (min-width: 768px) {
+    .about-details {
+      align-items: flex-start;
+    }
+  }
+  
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    width: 100%;
+    margin-bottom: 3rem;
+  }
+  
+  .stat-item {
+    text-align: center;
+  }
+  
+  @media (min-width: 768px) {
+    .stat-item {
+      text-align: left;
+    }
+  }
+  
+  .stat-value {
+    font-size: 2.25rem;
+    font-weight: 500;
+    color: #1a202c; /* gray-900 */
+    margin: 0;
+  }
+  
+  .stat-label {
+    font-size: 0.875rem;
+    margin: 0;
+  }
+  
+  .about-description {
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+  
+  @media (min-width: 768px) {
+    .about-description {
+      text-align: left;
+    }
+  }
+  
+  .about-button {
+    background-color: #2563eb; /* blue-600 */
+    color: white;
+    padding: 0.75rem 2.5rem;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    text-align: center;
+  }
+  
+  .about-button:hover {
+    background-color: #1d4ed8; /* blue-700 */
+  }
+  
+  /* Motion-style fade-slide animation */
+@keyframes fadeSlideIn {
+    0% {
+      opacity: 0;
+      transform: translateX(200px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .about-container {
+    /* existing styles */
+    animation: fadeSlideIn 1s ease forwards;
+  }
+  
