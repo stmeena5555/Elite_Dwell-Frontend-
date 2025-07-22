@@ -14,7 +14,9 @@ export default function OAuth() {
 
       const result = await signInWithPopup(auth, provider);
 
-      const res = await fetch("/api/auth/google", {
+      const res = await fetch(
+        fetch(`${process.env.REACT_APP_API_URL}/api/listing/get?type=rent&limit=4`),
+        {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
