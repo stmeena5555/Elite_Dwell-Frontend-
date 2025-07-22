@@ -15,18 +15,19 @@ export default function OAuth() {
       const result = await signInWithPopup(auth, provider);
 
       const res = await fetch(
-        fetch(`${process.env.REACT_APP_API_URL}/api/listing/get?type=rent&limit=4`),
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/google`,
         {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: result.user.displayName,
-          email: result.user.email,
-          photo: result.user.photoURL,
-        }),
-      });
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: result.user.displayName,
+            email: result.user.email,
+            photo: result.user.photoURL,
+          }),
+        }
+      );      
       const data = await res.json();
       dispatch(signInSuccess(data));
       navigate("/");
