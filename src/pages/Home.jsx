@@ -8,7 +8,7 @@ import SwiperCore from "swiper";
 import "swiper/css/bundle";
 import ListingItem from "../components/ListingItem";
 import "./Home.css"; 
-import Footer from "./Footer"; 
+import Footer from "./footer"; 
 import './Footer.css';
 
 export default function Home() {
