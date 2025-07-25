@@ -18,7 +18,7 @@ import {
   signOutUserStart,
 } from "../redux/user/userSlice";
 import { Link } from "react-router-dom";
-import "./profile.css";
+import "./Profile.css";
 
 export default function Profile() {
   const fileRef = useRef(null);
