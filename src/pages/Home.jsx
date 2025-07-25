@@ -8,8 +8,8 @@ import SwiperCore from "swiper";
 import "swiper/css/bundle";
 import ListingItem from "../components/ListingItem";
 import "./Home.css"; 
-import Footer from "./footer"; 
-import './Footer.css';
+import Footer from "./Footer";
+import './footer.css';
 
 export default function Home() {
   const [offerListings, setOfferListings] = useState([]);

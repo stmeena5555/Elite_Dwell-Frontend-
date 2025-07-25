@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import './Footer.css';
+import  './footer.css';
 import { assets } from '../assets/assets.js'; // assuming this provides logo_dark
 
 const Footer = () => {
