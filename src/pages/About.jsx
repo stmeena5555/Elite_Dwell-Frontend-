@@ -2,7 +2,7 @@
 import './About.css';
 import './footer.css';
 import { assets } from '../assets/assets';
-import Footer from './Footer'; 
+import Footer from './Footer';
 
 export default function About() {
   return (
