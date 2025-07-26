@@ -1,4 +1,3 @@
-
 import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState, useEffect } from "react";
 import {
@@ -18,7 +17,8 @@ import {
   signOutUserStart,
 } from "../redux/user/userSlice";
 import { Link } from "react-router-dom";
-import "./Profile.css";
+import "./Profile.css"; // ✅ Use correct and consistent casing
+
 export default function Profile() {
   const fileRef = useRef(null);
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -32,9 +32,7 @@ export default function Profile() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (file) {
-      handleFileUpload(file);
-    }
+    if (file) handleFileUpload(file);
   }, [file]);
 
   const handleFileUpload = (file) => {
@@ -46,8 +44,7 @@ export default function Profile() {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setFilePerc(Math.round(progress));
       },
       (error) => {
@@ -56,7 +53,7 @@ export default function Profile() {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
-          setFormData({ ...formData, avatar: downloadURL })
+          setFormData((prev) => ({ ...prev, avatar: downloadURL }))
         );
       }
     );
@@ -75,12 +72,12 @@ export default function Profile() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include", // 🔥 Required for sending cookies (JWT)
+        credentials: "include",
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      if (data.success === false) {
-        dispatch(updateUserFailure(data.message));
+      if (!res.ok || data.success === false) {
+        dispatch(updateUserFailure(data.message || "Update failed"));
         return;
       }
       dispatch(updateUserSuccess(data));
@@ -89,7 +86,7 @@ export default function Profile() {
       dispatch(updateUserFailure(error.message));
     }
   };
-  
+
   const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
@@ -147,7 +144,6 @@ export default function Profile() {
         console.log(data.message);
         return;
       }
-
       setUserListings((prev) =>
         prev.filter((listing) => listing._id !== listingId)
       );
@@ -175,13 +171,11 @@ export default function Profile() {
         />
         <p className="upload-status">
           {fileUploadError ? (
-            <span className="error-msg">
-              Error Image upload (image must be less than 2 MB)
-            </span>
+            <span className="error-msg">Error Image upload (max 2MB)</span>
           ) : filePerc > 0 && filePerc < 100 ? (
             <span>{`Uploading ${filePerc}%`}</span>
           ) : filePerc === 100 ? (
-            <span className="success-msg">Image Successfully Uploaded!</span>
+            <span className="success-msg">Image Uploaded!</span>
           ) : (
             ""
           )}
@@ -198,8 +192,8 @@ export default function Profile() {
         <input
           type="email"
           placeholder="Email"
-          id="email"
           defaultValue={currentUser.email}
+          id="email"
           className="form-input"
           onChange={handleChange}
         />
@@ -229,18 +223,14 @@ export default function Profile() {
       </div>
 
       {error && <p className="error-msg">{error}</p>}
-      {updateSuccess && (
-        <p className="success-msg">User is updated successfully!</p>
-      )}
+      {updateSuccess && <p className="success-msg">Profile updated!</p>}
 
       <button onClick={handleShowListings} className="listings-btn">
         Show Listings
       </button>
-      {showListingsError && (
-        <p className="error-msg">Error showing listings</p>
-      )}
+      {showListingsError && <p className="error-msg">Error showing listings</p>}
 
-      {userListings && userListings.length > 0 && (
+      {userListings?.length > 0 && (
         <div className="listing-container">
           <h2 className="listing-title">Your Listings</h2>
           {userListings.map((listing) => (
@@ -252,10 +242,7 @@ export default function Profile() {
                   className="listing-img"
                 />
               </Link>
-              <Link
-                to={`/listing/${listing._id}`}
-                className="listing-name"
-              >
+              <Link to={`/listing/${listing._id}`} className="listing-name">
                 {listing.name}
               </Link>
               <div className="listing-buttons">
