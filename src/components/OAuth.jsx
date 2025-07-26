@@ -14,46 +14,38 @@ export default function OAuth() {
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
 
+      // ✅ Call backend to register/login user
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/google`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          name: result.user.displayName,
+          email: result.user.email,
+          photo: result.user.photoURL,
+        }),
+      });
+
       let data;
-
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/auth/google`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({
-              name: result.user.displayName,
-              email: result.user.email,
-              photo: result.user.photoURL,
-            }),
-          }
-        );
-
-        if (!res.ok) {
-          const message = await res.text();
-          console.error("❌ Backend error response:", message);
-          return;
-        }
-
-        try {
-          data = await res.json();
-        } catch (err) {
-          const text = await res.text();
-          console.error("❌ Failed to parse JSON. Raw response:", text);
-          return;
-        }
-
-        dispatch(signInSuccess(data));
-        navigate("/");
-      } catch (error) {
-        console.log("❌ Could not sign in with Google:", error);
+        data = await res.json();
+      } catch (err) {
+        const text = await res.text();
+        console.error("❌ Failed to parse JSON. Raw response:", text);
+        return;
       }
+
+      if (!res.ok) {
+        console.error("❌ Backend error:", data.message || "Unknown error");
+        return;
+      }
+
+      dispatch(signInSuccess(data));
+      navigate("/");
     } catch (error) {
-      console.log("❌ Google popup failed:", error);
+      console.error("❌ Google Sign-in Error:", error);
     }
   };
 
