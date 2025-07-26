@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import "./SignIn.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +8,6 @@ import {
   signInFailure,
 } from "../redux/user/userSlice";
 import OAuth from "../components/OAuth";
-import "./SignIn.css"; // Custom CSS file
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -26,18 +24,34 @@ export default function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch(signInStart());
+
     try {
-      dispatch(signInStart());
-      const res = await fetch("/api/auth/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (data.success === false) {
-        dispatch(signInFailure(data.message));
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/signin`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include", // Important for cookies (auth token)
+          body: JSON.stringify(formData),
+        }
+      );
+
+      let data;
+      try {
+        data = await res.json();
+      } catch (err) {
+        const raw = await res.text();
+        console.error("❌ Failed to parse JSON. Raw response:", raw);
+        dispatch(signInFailure("Invalid response from server"));
         return;
       }
+
+      if (!res.ok || data.success === false) {
+        dispatch(signInFailure(data?.message || "Sign in failed"));
+        return;
+      }
+
       dispatch(signInSuccess(data));
       navigate("/");
     } catch (error) {
@@ -63,11 +77,7 @@ export default function SignIn() {
           onChange={handleChange}
           className="signin-input"
         />
-
-        <button
-          disabled={loading}
-          className="signin-button"
-        >
+        <button disabled={loading} className="signin-button">
           {loading ? "Loading..." : "Sign In"}
         </button>
         <OAuth />

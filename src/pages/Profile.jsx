@@ -19,7 +19,6 @@ import {
 } from "../redux/user/userSlice";
 import { Link } from "react-router-dom";
 import "./profile.css";
-
 export default function Profile() {
   const fileRef = useRef(null);
   const { currentUser, loading, error } = useSelector((state) => state.user);
